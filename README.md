@@ -1,7 +1,7 @@
 # College Basketball March Madness Predictor (w/ XGBoost) 🏀
 ![Static Badge](https://img.shields.io/badge/Status-In_progress-yellow)
 
-This project is aimed at predicting which teams will make the tournament in a given year. Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time.
+This project is aimed at predicting which teams will receive a tournament bid with given stats such as their 3PT%, FT%, FG%, etc.
 
 <img src = "https://github.com/user-attachments/assets/f4abd1d7-2e7a-4913-8e06-a5fa02697fc6" width = 475px height = 300px>
 
@@ -24,3 +24,14 @@ In the data folder is a modified version of the dataset
 - Removed SEED in code (NCAA seed in tournament) as this would tell us whether the team made the tournament.
 
 - Removed TEAM in code to better generalize which stats are more predictive of a tournament bid
+
+## Training/Validation
+Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time. The function is found in the *proj_setup* module.
+
+```python
+def init_windows(initial_train, i)
+```
+
+<img src = "https://github.com/user-attachments/assets/2a857f3f-a834-4435-a107-eac58053dcf1" width = 500px height = 200px>
+
+
