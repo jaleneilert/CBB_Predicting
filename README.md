@@ -26,7 +26,7 @@ In the data folder is a modified version of the dataset
 - Removed TEAM in code to better generalize which stats are more predictive of a tournament bid
 
 ## Training/Validation
-Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time. The function is found in the *proj_setup* module.
+Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time. The window implementation is found in the *proj_setup* module.
 
 ```python
 def init_windows(initial_train, i)
