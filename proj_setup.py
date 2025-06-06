@@ -74,35 +74,24 @@ def split_data(cbb_df):
 
     return initial_train, initial_test
 
-def init_windows(initial_train, i):
+def init_window(X, y, i):
     # need to account for missing 2021 data when look at window 2018, 2019, 2020, 2022 and last window
-    if i == 5:
-        Xtrain = initial_train[(initial_train['YEAR'] >= (2018)) & (initial_train['YEAR'] <= (2021))]
-        ytrain = Xtrain['POSTSEASON']
-        Xtrain = Xtrain.drop('POSTSEASON', axis = 1)
 
-        Xvalid = initial_train[initial_train['YEAR'] == (2022)]
-        yvalid = Xvalid['POSTSEASON']
-        Xvalid = Xvalid.drop('POSTSEASON', axis = 1)
-    elif i == 6:
-        Xtrain = initial_train[(initial_train['YEAR'] >= (2019)) & (initial_train['YEAR'] <= (2022))]
-        ytrain = Xtrain['POSTSEASON']
-        Xtrain = Xtrain.drop('POSTSEASON', axis = 1)
+    years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023]
 
-        Xvalid = initial_train[initial_train['YEAR'] == (2023)]
-        yvalid = Xvalid['POSTSEASON']
-        Xvalid = Xvalid.drop('POSTSEASON', axis = 1)
-    else:
-        Xtrain = initial_train[(initial_train['YEAR'] >= (2013 + i)) & (initial_train['YEAR'] <= (2015 + i))]
-        ytrain = Xtrain['POSTSEASON']
-        Xtrain = Xtrain.drop('POSTSEASON', axis = 1)
+    training_years = years[i: i + 3]
+    validation_year = years[i + 3]
 
-        if i == 4:
-            Xvalid = initial_train[initial_train['YEAR'] == (2021)]
-        else:
-            Xvalid = initial_train[initial_train['YEAR'] == (2016 + i)]
+    # bool array telling us which data in X have the years we want
+    train_m = X['YEAR'].isin(training_years)
+    validation_m = X['YEAR'] == validation_year
 
-        yvalid = Xvalid['POSTSEASON']
-        Xvalid = Xvalid.drop('POSTSEASON', axis = 1)
+    train_indices = np.where(train_m)[0]
+    valid_indices = np.where(validation_m)[0]
+
+    Xtrain = X.loc[train_indices]
+    ytrain = y.loc[train_indices]
+    Xvalid = X.loc[valid_indices]
+    yvalid = y.loc[valid_indices]
 
     return  Xtrain, ytrain, Xvalid, yvalid

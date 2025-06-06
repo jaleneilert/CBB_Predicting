@@ -22,6 +22,13 @@ accuracy = []
 
 avg_accuracies = []
 
+# best parameters found through grid search in hyper_params.py
+best_params = { 'eta' : 0.4,
+                'gamma': 0.8,
+                'max_delta_step': 3,
+                'min_child_weight': 1,
+                'num_parallel_tree': 10,
+               }
 # test 10 different seeds to test model stability
 seeds = range(10)
 # 7 windows
@@ -43,6 +50,7 @@ for seed in seeds:
                         random_state=seed,
                         subsample=0.8,
                         colsample_bytree=0.8,
+                        **best_params,
                         callbacks= [es, em])
 
     clf.fit(Xtrain, ytrain, eval_set=[(Xvalid, yvalid)])
