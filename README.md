@@ -29,7 +29,7 @@ In the data folder is a modified version of the dataset
 Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time. The window implementation is found in the *proj_setup* module.
 
 ```python
-def init_windows(initial_train, i)
+def init_windows(X, y, i)
 ```
 
 <img src = "https://github.com/user-attachments/assets/2a857f3f-a834-4435-a107-eac58053dcf1" width = 500px height = 200px>
