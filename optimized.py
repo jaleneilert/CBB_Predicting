@@ -1,8 +1,10 @@
 import proj_setup
 from sklearn.metrics import accuracy_score, root_mean_squared_error, ConfusionMatrixDisplay
-from xgboost import XGBClassifier, callback
+from xgboost import XGBClassifier, callback, plot_tree, to_graphviz
 import matplotlib.pyplot as plt
 import numpy as np
+import graphviz
+import os
 
 cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
 
@@ -60,8 +62,20 @@ for seed in seeds:
     accuracy.append(accuracy_score(yvalid, ypred))
 
     if seed == 0:
-      ConfusionMatrixDisplay.from_predictions(yvalid, ypred)
-      plt.show()
+      #ConfusionMatrixDisplay.from_predictions(yvalid, ypred)
+      #plt.show()
+      tree_dot = to_graphviz(clf, num_trees=2)
+      # Save the dot file
+      dot_file_path = "xgboost_tree.dot"
+      tree_dot.save(dot_file_path)
+      # Convert dot file to png and display
+      with open(dot_file_path) as f:
+          dot_graph = f.read()
+      # Use graphviz to display the tree
+      graph = graphviz.Source(dot_graph)
+      graph.render("xgboost_tree")
+      # Optionally, visualize the graph directly
+      graph
 
   print(accuracy)
   print(np.mean(accuracy))

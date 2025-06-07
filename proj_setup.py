@@ -75,7 +75,7 @@ def split_data(cbb_df):
     return initial_train, initial_test
 
 def init_window(X, y, i):
-    # need to account for missing 2021 data when look at window 2018, 2019, 2020, 2022 and last window
+    # need to account for missing 2021 data due to no postseason
 
     years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023]
 
