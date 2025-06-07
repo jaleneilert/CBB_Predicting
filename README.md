@@ -26,10 +26,38 @@ In the data folder is a modified version of the dataset
 - Removed TEAM in code to better generalize which stats are more predictive of a tournament bid
 
 ## Training/Validation
-Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time. The window implementation is found in the *proj_setup* module.
+Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time.
 
+The for loops seen in *default_params* and *optimized modules* define the number of windows that the program will make. 
 ```python
-def init_windows(initial_train, i)
+for i in range(7)
+```
+I pass in i from the for loop to increment the range of years in the 'years' array to create the desired window. Then I check the dataset's year column to see which ones correspond to the newly defined 'training_years' and 'validation_year'. This creates a boolean array (1 if its is data from one of the years we want 0 if not). From there I grab the indices of the training and validation sets. Using loc on the original dataframe creates new dataframes for the newly defined training and validation window.
+
+*proj_setup.py*
+```python
+def init_window(X, y, i):
+  # need to account for missing 2021 data due to no postseason
+
+    years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023]
+
+    training_years = years[i: i + 3]
+    validation_year = years[i + 3]
+
+    # bool array telling us which data in X have the years we want
+    train_m = X['YEAR'].isin(training_years)
+    validation_m = X['YEAR'] == validation_year
+
+    train_indices = np.where(train_m)[0]
+    valid_indices = np.where(validation_m)[0]
+
+    Xtrain = X.loc[train_indices]
+    ytrain = y.loc[train_indices]
+    Xvalid = X.loc[valid_indices]
+    yvalid = y.loc[valid_indices]
+
+    return  Xtrain, ytrain, Xvalid, yvalid
+
 ```
 
 <img src = "https://github.com/user-attachments/assets/2a857f3f-a834-4435-a107-eac58053dcf1" width = 500px height = 200px>
