@@ -34,18 +34,11 @@ for seed in seeds:
     # --- START OF MODEL PROGRAM ---
 
     # setting is binary/logistic as we are looking for 0 being not making tournament and 1 making tournament
-    es = callback.EarlyStopping(rounds=10, save_best=True)
-    em = callback.EvaluationMonitor(show_stdv=True)
-
     clf = XGBClassifier(objective='binary:logistic',
-                        base_score=0.192,
                         eval_metric='aucpr',
-                        random_state=seed,
-                        subsample=0.8,
-                        colsample_bytree=0.8,
-                        callbacks= [es, em])
+                        random_state=seed)
 
-    clf.fit(Xtrain, ytrain, eval_set=[(Xvalid, yvalid)])
+    clf.fit(Xtrain, ytrain)
 
     ypred = clf.predict(Xvalid)
 
@@ -62,3 +55,15 @@ for seed in seeds:
 
 print(avg_accuracies)
 print(np.mean(avg_accuracies))
+print(f"The avg validation accuracy is {np.mean(avg_accuracies)}")
+
+
+clf = XGBClassifier(objective='binary:logistic',
+                    eval_metric='aucpr')
+
+clf.fit(X, y)
+
+ypred_t = clf.predict(Xtest)
+accuracy_t = accuracy_score(ytest, ypred_t)
+print(f"The test accuracy is {accuracy_t}")
+

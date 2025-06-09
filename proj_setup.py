@@ -94,4 +94,8 @@ def init_window(X, y, i):
     Xvalid = X.loc[valid_indices]
     yvalid = y.loc[valid_indices]
 
+    print(f"training years: {training_years}")
+    print(f"Validation year: {validation_year}")
+    print(f"Y train length: {len(ytrain)}")
+    print(f"Y valid length: {len(yvalid)}")
     return  Xtrain, ytrain, Xvalid, yvalid

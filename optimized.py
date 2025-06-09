@@ -14,6 +14,8 @@ cbb_df = proj_setup.encode_conference(cbb_df)
 
 X, Xtest = proj_setup.split_data(cbb_df)
 
+scale_weight = 2843/680
+
 y = X['POSTSEASON']
 X = X.drop('POSTSEASON', axis = 1)
 
@@ -25,12 +27,13 @@ accuracy = []
 avg_accuracies = []
 
 # best parameters found through grid search in hyper_params.py
-best_params = { 'eta' : 0.4,
-                'gamma': 0.8,
-                'max_delta_step': 3,
+
+best_params = { 'max_depth': 6,
                 'min_child_weight': 1,
-                'num_parallel_tree': 10,
+                'subsample': 1,
+                'colsample_bytree': 0.8,
                }
+
 # test 10 different seeds to test model stability
 seeds = range(10)
 # 7 windows
@@ -43,19 +46,19 @@ for seed in seeds:
     # --- START OF MODEL PROGRAM ---
 
     # setting is binary/logistic as we are looking for 0 being not making tournament and 1 making tournament
-    es = callback.EarlyStopping(rounds=10, save_best=True)
     em = callback.EvaluationMonitor(show_stdv=True)
 
     clf = XGBClassifier(objective='binary:logistic',
                         base_score=0.192,
                         eval_metric='aucpr',
                         random_state=seed,
-                        subsample=0.8,
-                        colsample_bytree=0.8,
+                        scale_pos_weight=scale_weight,
+                        learning_rate = 0.25,
+                        n_estimators=60,
                         **best_params,
-                        callbacks= [es, em])
+                        callbacks= [em])
 
-    clf.fit(Xtrain, ytrain, eval_set=[(Xvalid, yvalid)])
+    clf.fit(Xtrain, ytrain)
 
     ypred = clf.predict(Xvalid)
 
@@ -84,3 +87,22 @@ for seed in seeds:
 
 print(avg_accuracies)
 print(np.mean(avg_accuracies))
+
+
+
+em = callback.EvaluationMonitor(show_stdv=True)
+
+clf = XGBClassifier(objective='binary:logistic',
+                    base_score=0.192,
+                    eval_metric='aucpr',
+                    scale_pos_weight=scale_weight,
+                    learning_rate = 0.25,
+                    n_estimators=60,
+                    **best_params,
+                    callbacks=[em])
+clf.fit(X, y)
+
+ypred_t = clf.predict(Xtest)
+accuracy_t = accuracy_score(ytest, ypred_t)
+print(f"The test accuracy is {accuracy_t}")
+

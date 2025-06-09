@@ -35,30 +35,49 @@ cbb_df = proj_setup.encode_conference(cbb_df)
 
 initial_train, initial_test = proj_setup.split_data(cbb_df)
 
-accuracy = []
 
+# need to drop postseason
+y = initial_train['POSTSEASON']
+X = initial_train.drop('POSTSEASON', axis = 1)
+
+counts = y.value_counts()
+
+# Scale by the # of teams that missed / # that made the tournament
+number_missed = counts.get(0, 0)
+number_made = counts.get(1, 0)
+
+print(f" Number of teams that missed: {number_missed} vs made tournament: {number_made}")
+scale_weight = number_missed/number_made
+
+# Class imbalances
+# base_score -> 0.192 because 19.2% was the percentage of teams in the data set
+# that made the tournament
+#
 clf = XGBClassifier(objective='binary:logistic',
                     base_score=0.192,
                     eval_metric='aucpr',
-                    subsample=0.8,
-                    colsample_bytree=0.8)
+                    learning_rate=0.25,
+                    n_estimators=60,
+                    scale_pos_weight=scale_weight)
 
 pipeline = Pipeline([
     ('classifier', clf)
 ])
 
+# Tune the top 4 most important XGBoost params to see which combination is the best
 params = {
-    'classifier__gamma': [0.2, 0.4, 0.6, 0.8],
-    'classifier__max_depth': [2, 3, 4, 5],
-    'classifier__min_child_weight': [1, 5, 10, 20, 50],
-    'classifier__max_delta_step': [0, 3, 6, 9],
-    'classifier__eta': [0.3, 0.4, 0.6, 0.8],
-    'classifier__num_parallel_tree': [1, 5, 10, 15]
-}
+    # max depth of decision tree (default: 6)
+    'classifier__max_depth': [2, 3, 4, 5, 6],
 
-# need to drop postseason
-y = initial_train['POSTSEASON']
-X = initial_train.drop('POSTSEASON', axis = 1)
+    # minimum sum of instance weights to create a new child node (default: 1)
+    'classifier__min_child_weight': [1, 2, 3, 4, 5],
+
+    # fraction of training samples used per iteration (can create more random trees while reducing overfitting)
+    'classifier__subsample': [0.6, 0.7, 0.8, 0.9, 1],
+
+    # fraction of features used to create a tree
+    'classifier__colsample_bytree': [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+}
 
 # cv: needs an iterable of the splits as arrays of indices
 my_cv = CustomSlidingWindow.split(X, y, 7)
@@ -85,9 +104,3 @@ X_initial_test = initial_test.drop('POSTSEASON', axis = 1)
 
 ypred = best_model.predict(X_initial_test)
 
-accuracy.append(accuracy_score(y_initial_test, ypred))
-
-#only use first 3 windows to reduce run time
-
-print(accuracy)
-print(np.mean(accuracy))
