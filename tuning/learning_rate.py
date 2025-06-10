@@ -6,7 +6,7 @@ import numpy as np
 import graphviz
 import os
 
-cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
+cbb_df = proj_setup.read('../data/cbb.csv', '../data/cbb25.csv')
 
 cbb_df = proj_setup.encode_postseason(cbb_df)
 

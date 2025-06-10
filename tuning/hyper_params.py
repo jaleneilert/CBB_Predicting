@@ -27,7 +27,7 @@ class CustomSlidingWindow:
             yield train_indices, valid_indices
 
 # initializing ...
-cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
+cbb_df = proj_setup.read('../data/cbb.csv', '../data/cbb25.csv')
 
 cbb_df = proj_setup.encode_postseason(cbb_df)
 

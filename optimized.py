@@ -120,3 +120,4 @@ print(f"The test accuracy is {accuracy_t}")
 t1 = time.time()
 print(f"Run time: {t1-t0}s")
 
+clf.save_model("xgboost_model.json")

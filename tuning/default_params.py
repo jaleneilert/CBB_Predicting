@@ -7,7 +7,7 @@ import time
 
 t0 = time.time()
 
-cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
+cbb_df = proj_setup.read('../data/cbb.csv', '../data/cbb25.csv')
 
 cbb_df = proj_setup.encode_postseason(cbb_df)
 
