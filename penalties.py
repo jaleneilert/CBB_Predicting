@@ -56,7 +56,11 @@ scale_weight = number_missed/number_made
 clf = XGBClassifier(objective='binary:logistic',
                     base_score=0.192,
                     eval_metric='aucpr',
-                    learning_rate=0.25,
+                    learning_rate=0.25, max_depth = 6,
+                    min_child_weight = 1,
+                    subsample = 1,
+                    colsample_bytree = 0.8,
+                    max_delta_step = 2,
                     n_estimators=60,
                     scale_pos_weight=scale_weight)
 
@@ -66,18 +70,14 @@ pipeline = Pipeline([
 
 # Tune the top 4 most important XGBoost params to see which combination is the best
 params = {
-    # max depth of decision tree (default: 6)
-    'classifier__max_depth': [2, 3, 4, 5, 6, 7],
 
-    # minimum sum of instance weights to create a new child node (default: 1)
-    'classifier__min_child_weight': [1, 2, 3, 4, 5],
+    'classifier__min_split_loss': [0, 0,1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
 
-    # fraction of training samples used per iteration (can create more random trees while reducing overfitting)
-    'classifier__subsample': [0.6, 0.7, 0.8, 0.9, 1],
+    # shrink coefficients that are less important
+    'classifier__reg_alpha': [0, 0.01, 0.1, 1, 10, 100],
 
-    # fraction of features used to create a tree
-    'classifier__colsample_bytree': [0.5, 0.6, 0.7, 0.8, 0.9, 1],
-
+    # added penalty to sum of squared weights
+    'classifier__reg_lambda': [0, 0.01, 0.1, 1, 10, 100],
 }
 
 # cv: needs an iterable of the splits as arrays of indices

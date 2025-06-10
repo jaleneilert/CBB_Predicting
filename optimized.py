@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import graphviz
 import os
+import time
 
+t0 = time.time()
 cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
 
 cbb_df = proj_setup.encode_postseason(cbb_df)
@@ -28,11 +30,23 @@ avg_accuracies = []
 
 # best parameters found through grid search in hyper_params.py
 
+''' 92%
 best_params = { 'max_depth': 6,
                 'min_child_weight': 1,
                 'subsample': 1,
                 'colsample_bytree': 0.8,
-                'max_delta_step': 1
+                'max_delta_step': 2
+               }
+'''
+
+# 92.4%
+best_params = { 'max_depth': 6,
+                'min_child_weight': 1,
+                'subsample': 1,
+                'colsample_bytree': 0.8,
+                'max_delta_step': 2,
+                'reg_lambda': 1,
+                'min_split_loss': 0.2
                }
 
 # test 10 different seeds to test model stability
@@ -47,8 +61,6 @@ for seed in seeds:
     # --- START OF MODEL PROGRAM ---
 
     # setting is binary/logistic as we are looking for 0 being not making tournament and 1 making tournament
-    em = callback.EvaluationMonitor(show_stdv=True)
-
     clf = XGBClassifier(objective='binary:logistic',
                         base_score=0.192,
                         eval_metric='aucpr',
@@ -56,8 +68,7 @@ for seed in seeds:
                         scale_pos_weight=scale_weight,
                         learning_rate = 0.25,
                         n_estimators=60,
-                        **best_params,
-                        callbacks= [em])
+                        **best_params)
 
     clf.fit(Xtrain, ytrain)
 
@@ -65,7 +76,8 @@ for seed in seeds:
 
     accuracy.append(accuracy_score(yvalid, ypred))
 
-    if seed == 0:
+    '''
+        if seed == 0:
       #ConfusionMatrixDisplay.from_predictions(yvalid, ypred)
       #plt.show()
       tree_dot = to_graphviz(clf, num_trees=2)
@@ -80,18 +92,16 @@ for seed in seeds:
       graph.render("xgboost_tree")
       # Optionally, visualize the graph directly
       graph
+    '''
 
-  print(accuracy)
-  print(np.mean(accuracy))
+
+  #print(accuracy)
+  #print(np.mean(accuracy))
   avg_accuracies.append(np.mean(accuracy))
   accuracy.clear()
 
-print(avg_accuracies)
+#print(avg_accuracies)
 print(np.mean(avg_accuracies))
-
-
-
-em = callback.EvaluationMonitor(show_stdv=True)
 
 clf = XGBClassifier(objective='binary:logistic',
                     base_score=0.192,
@@ -99,11 +109,14 @@ clf = XGBClassifier(objective='binary:logistic',
                     scale_pos_weight=scale_weight,
                     learning_rate = 0.25,
                     n_estimators=60,
-                    **best_params,
-                    callbacks=[em])
+                    **best_params)
+
 clf.fit(X, y)
 
 ypred_t = clf.predict(Xtest)
 accuracy_t = accuracy_score(ytest, ypred_t)
 print(f"The test accuracy is {accuracy_t}")
+
+t1 = time.time()
+print(f"Run time: {t1-t0}s")
 

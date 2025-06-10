@@ -17,7 +17,7 @@ def read(filepath1, filepath2):
     # Want to drop the seed because it tells us their ranking in the tournament
     cbb_df = cbb_df.drop('SEED', axis = 1)
 
-    print(cbb_df)
+    #print(cbb_df)
 
     cbb_df.dtypes
 
@@ -31,8 +31,8 @@ def encode_postseason(cbb_df):
     cbb_df['POSTSEASON'] = cbb_df['POSTSEASON'].astype(str)
     cbb_df['POSTSEASON'] = np.where(cbb_df['POSTSEASON'].isin(['NA', 'N/A', 'nan']), 0, 1)
 
-    print(cbb_df['POSTSEASON'].unique())
-    print(cbb_df['POSTSEASON'])
+    #print(cbb_df['POSTSEASON'].unique())
+    #print(cbb_df['POSTSEASON'])
 
     # return modified data frame
     return cbb_df
@@ -64,7 +64,7 @@ def encode_conference(cbb_df):
     cbb_df = pd.concat([cbb_df, one_df], axis=1)
 
     # return resulting data frame
-    print(cbb_df)
+    #print(cbb_df)
     return cbb_df
 
 # split the data into train (this will be split into validation in window) and test
@@ -94,8 +94,8 @@ def init_window(X, y, i):
     Xvalid = X.loc[valid_indices]
     yvalid = y.loc[valid_indices]
 
-    print(f"training years: {training_years}")
-    print(f"Validation year: {validation_year}")
-    print(f"Y train length: {len(ytrain)}")
-    print(f"Y valid length: {len(yvalid)}")
+    #print(f"training years: {training_years}")
+    #print(f"Validation year: {validation_year}")
+    #print(f"Y train length: {len(ytrain)}")
+    #print(f"Y valid length: {len(yvalid)}")
     return  Xtrain, ytrain, Xvalid, yvalid

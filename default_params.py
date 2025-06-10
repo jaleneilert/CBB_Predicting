@@ -3,6 +3,9 @@ from sklearn.metrics import accuracy_score, root_mean_squared_error, ConfusionMa
 from xgboost import XGBClassifier, callback
 import matplotlib.pyplot as plt
 import numpy as np
+import time
+
+t0 = time.time()
 
 cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
 
@@ -44,17 +47,19 @@ for seed in seeds:
 
     accuracy.append(accuracy_score(yvalid, ypred))
 
-    if seed == 0:
-      ConfusionMatrixDisplay.from_predictions(yvalid, ypred)
-      plt.show()
+    '''
+        if seed == 0:
+        ConfusionMatrixDisplay.from_predictions(yvalid, ypred)
+        plt.show()
+    '''
 
-  print(accuracy)
-  print(np.mean(accuracy))
+  #print(accuracy)
+  #print(np.mean(accuracy))
   avg_accuracies.append(np.mean(accuracy))
   accuracy.clear()
 
-print(avg_accuracies)
-print(np.mean(avg_accuracies))
+#print(avg_accuracies)
+#print(np.mean(avg_accuracies))
 print(f"The avg validation accuracy is {np.mean(avg_accuracies)}")
 
 
@@ -67,3 +72,5 @@ ypred_t = clf.predict(Xtest)
 accuracy_t = accuracy_score(ytest, ypred_t)
 print(f"The test accuracy is {accuracy_t}")
 
+t1 = time.time()
+print(f"Run time: {t1-t0}s")
