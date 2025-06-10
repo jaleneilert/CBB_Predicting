@@ -10,7 +10,7 @@ def read(filepath1, filepath2):
     # team needed to be capitalized to combine the two (in the cbb_25 dataset)
     cbb_df = pd.concat([cbb_df, cbb_25])
 
-    # replace whitespace in team column for graphing
+    # replace whitespace in team column
     cbb_df['TEAM'] = cbb_df['TEAM'].replace(' ', '_', regex = True)
     cbb_df.head()
 
@@ -37,7 +37,7 @@ def encode_postseason(cbb_df):
     # return modified data frame
     return cbb_df
 
-def encode_conference(cbb_df):
+def encode_conference(cbb_df, keep_team:bool = False):
     # Power Five conferences (SEC, ACC, B10, B12, BE) and then Mid-Major
     power_five = ['SEC', 'ACC', 'B10', 'B12', 'BE']
     cbb_df['CONF'] = cbb_df['CONF'].astype(str)
@@ -45,7 +45,8 @@ def encode_conference(cbb_df):
 
     cbb_df['CONF'].unique()
 
-    cbb_df = cbb_df.drop('TEAM', axis=1)
+    if keep_team == False:
+        cbb_df = cbb_df.drop('TEAM', axis=1)
 
     cbb_df.head()
 
@@ -99,3 +100,18 @@ def init_window(X, y, i):
     #print(f"Y train length: {len(ytrain)}")
     #print(f"Y valid length: {len(yvalid)}")
     return  Xtrain, ytrain, Xvalid, yvalid
+
+def main_setup():
+    cbb_df = read('./data/cbb.csv', './data/cbb25.csv')
+
+    cbb_df = encode_postseason(cbb_df)
+
+    # keep the team so user can search for them (will remove before model fitting)
+    cbb_df = encode_conference(cbb_df, True)
+
+    X, Xtest = split_data(cbb_df)
+
+    ytest = Xtest['POSTSEASON']
+    Xtest = Xtest.drop('POSTSEASON', axis=1)
+
+    return Xtest, ytest

@@ -6,6 +6,7 @@ import numpy as np
 import graphviz
 import os
 import time
+import pickle
 
 t0 = time.time()
 cbb_df = proj_setup.read('./data/cbb.csv', './data/cbb25.csv')
@@ -120,4 +121,5 @@ print(f"The test accuracy is {accuracy_t}")
 t1 = time.time()
 print(f"Run time: {t1-t0}s")
 
-clf.save_model("xgboost_model.json")
+with open('clf.pkl', 'wb') as f:
+    pickle.dump(clf, f)
