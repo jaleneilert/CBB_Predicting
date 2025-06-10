@@ -76,7 +76,12 @@ params = {
     'classifier__subsample': [0.6, 0.7, 0.8, 0.9, 1],
 
     # fraction of features used to create a tree
-    'classifier__colsample_bytree': [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    'classifier__colsample_bytree': [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+
+    # increase makes the model need a greater reduction from the loss function to split a node (default 0)
+    'classifier__min_split_loss': [0, 0.2, 0.4, 0.6, 0.8, 1],
+
+    'classifier__max_delta_step': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 }
 
 # cv: needs an iterable of the splits as arrays of indices

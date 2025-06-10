@@ -32,6 +32,7 @@ best_params = { 'max_depth': 6,
                 'min_child_weight': 1,
                 'subsample': 1,
                 'colsample_bytree': 0.8,
+                'max_delta_step': 1
                }
 
 # test 10 different seeds to test model stability
