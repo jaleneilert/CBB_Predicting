@@ -7,7 +7,7 @@
 ![Static Badge](https://img.shields.io/badge/matplotlib-3.8.4-blue)
 ![Static Badge](https://img.shields.io/badge/graphviz-0.20.1-blue)
 
-This project is aimed at predicting which teams will receive a tournament bid with given stats such as their 3PT%, FT%, FG%, etc.
+This project is aimed at predicting which teams will receive a tournament bid with given stats such as their 3PT%, FG%, WAB, etc. After optimizing hyperparameters, the model was able to achieve a **92.42% test accuracy** and **91.50% average validation accuracy**.
 
 <img src = "https://github.com/user-attachments/assets/f4abd1d7-2e7a-4913-8e06-a5fa02697fc6" width = 475px height = 300px>
 
@@ -77,5 +77,39 @@ def init_window(X, y, i):
 ```
 
 <img src = "https://github.com/user-attachments/assets/2a857f3f-a834-4435-a107-eac58053dcf1" width = 500px height = 200px>
+
+### Hyperparameter Optimization
+#### Learning Rate
+*learning_rates.py*
+
+Learing rate is how fast the model can learn. I tested different values ranging from 0 to 1, but found that between 0 and 3 was where the model had the best precision.  
+![image](https://github.com/user-attachments/assets/054b7acc-d287-4c1b-bb69-8234e7d2f4b4)
+
+From the simulation, the best precision score of 0.6678 was achieved with 0.25, so this became the model's new learning rate.
+
+#### Number of Estimators
+*diff_estimators.py*
+
+Having the learning rate, we can now tune the number of estimators. The number of estimators (n_estimators) in XGBoost determines the number of trees that the model will produce. Increasing this number can lead to overfitting and be computationally expensive. Therefore, I am looking for the best precision with the lowest n_estimators I can get.
+
+![image](https://github.com/user-attachments/assets/c70a305d-bd8e-4456-98f3-89840a48669d)
+From the simulation, we can see the model achieves its highest precision between 60 and 100 and then falls of slowly after. For this reason, I went with 60 estimators to achieve the balance of precision and lowering model variance.
+
+#### Important Hyperparameters
+*hyper_params.py*
+
+- max_depth (default:6) - The max depth of the decision tree
+- min_child_weight (default: 1) - Minimum sum of instance weights needed to create a new child node.
+- subsample (default: 1) - Fraction of training samples used to create a tree.
+- cosample_by_tree (default: 1) - Fraction of features used to create a tree.
+
+These parameters were tuned using the new learning_rate and n_estimators with GridSearchCV. I defined different values for each of the different hyperparameters. The program iterates through all of them and returns the combination with the best accuracy. 
+
+*Note*: GridSearchCV requires a splitter in its function. I redefined the init_window to a class CustomSlidingWindow in which its split function performs the same task, but only returns the indices of each window. 
+
+## Conclusion
+The optimized model was able to achieve a better training accuracy while also being almost a second faster in run time.
+<img src = "https://github.com/user-attachments/assets/8c7424fd-bfc9-4f03-aa86-0167d6ffac5b" width = 360px height = 180px>
+<img src = "https://github.com/user-attachments/assets/a659237e-2b45-4b4f-a7e0-e041cb30d21b" width = 360px height = 180px>
 
 
