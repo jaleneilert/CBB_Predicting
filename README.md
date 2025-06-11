@@ -39,7 +39,7 @@ The *encode_postseason(cbb_df)* function encodes all tournament misses 'NA', 'N/
 
 The *encode_conference(cbb_df, keep_team:bool = False)* adds a new column for my defined power five conferences and one other for all other conferences (Mid-Major). A one is placed in that column of that team's conference and a 0 in all other conference columns.
 
-<img src = "https://github.com/user-attachments/assets/89414584-97fa-4f64-8f16-7e5d49bf70ad" width = 400px height = 300px>
+<img src = "https://github.com/user-attachments/assets/242de795-2bb5-4586-85d0-d20c0dcd983c" width = 400px height = 300px>
 
 ## Training/Validation
 Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time.
