@@ -1,5 +1,11 @@
 # College Basketball March Madness Predictor (w/ XGBoost) 🏀
 ![Static Badge](https://img.shields.io/badge/Status-In_progress-yellow)
+![Static Badge](https://img.shields.io/badge/Conda-24.11.3-green)
+![Static Badge](https://img.shields.io/badge/scikit_learn-1.4.2-blue)
+![Static Badge](https://img.shields.io/badge/xgboost-2.1.4-blue)
+![Static Badge](https://img.shields.io/badge/pandas-2.2.2-blue)
+![Static Badge](https://img.shields.io/badge/matplotlib-3.8.4-blue)
+![Static Badge](https://img.shields.io/badge/graphviz-0.20.1-blue)
 
 This project is aimed at predicting which teams will receive a tournament bid with given stats such as their 3PT%, FT%, FG%, etc.
 
