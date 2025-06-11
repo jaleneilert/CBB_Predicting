@@ -35,8 +35,11 @@ In the data folder is a modified version of the dataset
 The project utilizes binary encoding for the post-season one-hot encoding for the conference (found in *proj_setup*). 
 
 The *encode_postseason(cbb_df)* function encodes all tournament misses 'NA', 'N/A', 'nan' to 0 and the rest (making the tournament) to 1. 
+<img src = "https://github.com/user-attachments/assets/b6805915-88e2-4377-94d3-1baf48dce7f2" width = 400px height = 300px>
 
 The *encode_conference(cbb_df, keep_team:bool = False)* adds a new column for my defined power five conferences and one other for all other conferences (Mid-Major). A one is placed in that column of that team's conference and a 0 in all other conference columns.
+
+<img src = "https://github.com/user-attachments/assets/89414584-97fa-4f64-8f16-7e5d49bf70ad" width = 400px height = 300px>
 
 ## Training/Validation
 Training and validation utilize a 7-window sliding setup (3 years train, 1 validate) to see how the model generalizes over time.
