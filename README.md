@@ -137,8 +137,11 @@ The optimized model was able to achieve a better training accuracy while also be
 <img src = "https://github.com/user-attachments/assets/a659237e-2b45-4b4f-a7e0-e041cb30d21b" width = 360px height = 180px>
 
 Resources for more research:
+
 Statquest series: https://www.youtube.com/watch?v=OtD8wVaFm6E&t=1260s
+
 Gradient Boosting: https://www.youtube.com/watch?v=en2bmeB4QUo&t=553s
+
 Important Model Parameters: https://xgboosting.com/most-important-xgboost-hyperparameters-to-tune/
 
 
