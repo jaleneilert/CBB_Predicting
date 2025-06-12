@@ -28,6 +28,7 @@ Probability = \frac{e^{log(odds)}}{1 + e^{log(odds)}}
 Probability\ of\ left\ most\ leaf = \frac{e^{0.331378371}}{1 + e^{0.331378371}} = 0.58
 ```
 The tree gives us a predicted probability of 0.58 for a team that has 6 or more wins below the bubble, less than 17 wins, and allowed FG% of 45.6%. This would mean the model thinks the team is likely middle of the pack, fighting for a final pick. With the team's lacking resume, future trees will likely further reduce the overall prediction (being in favor of the team not making the tournament). 
+
 <img src =https://github.com/user-attachments/assets/affc8d13-4e81-4c94-bc58-a248cc6dfe52 width = 1000px height = 425px>
 
 This is the third graph that has some more refined findings. 
@@ -56,10 +57,11 @@ In the data folder is a modified version of the dataset
 ### Encoding
 The project utilizes binary encoding for the post-season one-hot encoding for the conference (found in *proj_setup*). 
 
-The *encode_postseason(cbb_df)* function encodes all tournament misses 'NA', 'N/A', 'nan' to 0 and the rest (making the tournament) to 1. 
+- *encode_postseason(cbb_df)* function encodes all tournament misses 'NA', 'N/A', 'nan' to 0 and the rest (making the tournament) to 1. 
+
 <img src = "https://github.com/user-attachments/assets/b6805915-88e2-4377-94d3-1baf48dce7f2" width = 400px height = 300px>
 
-The *encode_conference(cbb_df, keep_team:bool = False)* adds a new column for my defined power five conferences and one other for all other conferences (Mid-Major). A one is placed in that column of that team's conference and a 0 in all other conference columns.
+- *encode_conference(cbb_df, keep_team:bool = False)* adds a new column for my defined power five conferences and one other for all other conferences (Mid-Major). A one is placed in that column of that team's conference and a 0 in all other conference columns.
 
 <img src = "https://github.com/user-attachments/assets/242de795-2bb5-4586-85d0-d20c0dcd983c" width = 400px height = 300px>
 
@@ -101,16 +103,15 @@ def init_window(X, y, i):
 <img src = "https://github.com/user-attachments/assets/2a857f3f-a834-4435-a107-eac58053dcf1" width = 500px height = 200px>
 
 ### Hyperparameter Optimization
-#### Learning Rate
-*learning_rates.py*
+#### Learning Rate *(learning_rates.py)*
 
 Learing rate is how fast the model can learn. I tested different values ranging from 0 to 1, but found that between 0 and 0.3 was where the model had the best precision.  
+
 ![image](https://github.com/user-attachments/assets/054b7acc-d287-4c1b-bb69-8234e7d2f4b4)
 
 From the simulation, the best precision score of 0.6678 was achieved with 0.25, so this became the model's new learning rate.
 
-#### Number of Estimators
-*diff_estimators.py*
+#### Number of Estimators *(diff_estimators.py)*
 
 Having the learning rate, we can now tune the number of estimators. The number of estimators (n_estimators) in XGBoost determines the number of trees that the model will produce. Increasing this number can lead to overfitting and be computationally expensive. Therefore, I am looking for the best precision with the lowest n_estimators I can get.
 
@@ -118,8 +119,7 @@ Having the learning rate, we can now tune the number of estimators. The number o
 
 From the simulation, we can see the model achieves its highest precision between 60 and 100 and then falls of slowly after. For this reason, I went with 60 estimators to achieve the balance of precision and lowering model variance.
 
-#### Important Hyperparameters
-*hyper_params.py*
+#### Important Hyperparameters *(hyper_params.py)*
 
 - max_depth (default:6) - The max depth of the decision tree
 - min_child_weight (default: 1) - Minimum sum of instance weights needed to create a new child node.
