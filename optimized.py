@@ -81,20 +81,21 @@ for seed in seeds:
         if seed == 0:
       #ConfusionMatrixDisplay.from_predictions(yvalid, ypred)
       #plt.show()
-      tree_dot = to_graphviz(clf, num_trees=2)
-      # Save the dot file
-      dot_file_path = "xgboost_tree.dot"
-      tree_dot.save(dot_file_path)
-      # Convert dot file to png and display
-      with open(dot_file_path) as f:
-          dot_graph = f.read()
-      # Use graphviz to display the tree
-      graph = graphviz.Source(dot_graph)
-      graph.render("xgboost_tree")
-      # Optionally, visualize the graph directly
-      graph
+      # get first three trees
+      for num_tree in range(3):
+          tree_dot = to_graphviz(clf, num_trees=num_tree)
+          # Save the dot file
+          dot_file_path = f"xgboost_tree_{num_tree}.dot"
+          tree_dot.save(dot_file_path)
+          # Convert dot file to png and display
+          with open(dot_file_path) as f:
+              dot_graph = f.read()
+          # Use graphviz to display the tree
+          graph = graphviz.Source(dot_graph)
+          graph.render(f"xgboost_tree_{num_tree}")
+          # Optionally, visualize the graph directly
+          graph
     '''
-
 
   #print(accuracy)
   #print(np.mean(accuracy))
@@ -102,7 +103,7 @@ for seed in seeds:
   accuracy.clear()
 
 #print(avg_accuracies)
-print(np.mean(avg_accuracies))
+print(f"The avg validation accuracy is {np.mean(avg_accuracies)}")
 
 clf = XGBClassifier(objective='binary:logistic',
                     base_score=0.192,
@@ -122,4 +123,4 @@ t1 = time.time()
 print(f"Run time: {t1-t0}s")
 
 with open('clf.pkl', 'wb') as f:
-    pickle.dump(clf, f)
+   pickle.dump(clf, f)
