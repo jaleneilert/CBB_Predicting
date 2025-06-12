@@ -131,7 +131,7 @@ These parameters were tuned using the new learning_rate and n_estimators with Gr
 *Note*: GridSearchCV requires a splitter in its function. I redefined the init_window to a class CustomSlidingWindow in which its split function performs the same task, but only returns the indices of each window. 
 
 ## Conclusion
-The optimized model was able to achieve a better training accuracy while also being almost a second faster in run time.
+The optimized model was able to achieve a better training accuracy while also being almost a second faster in run time. Using XGBoost for this project was a good choice and I can see why people would use it over algorithms like random forest.
 
 <img src = "https://github.com/user-attachments/assets/8c7424fd-bfc9-4f03-aa86-0167d6ffac5b" width = 360px height = 180px>
 <img src = "https://github.com/user-attachments/assets/a659237e-2b45-4b4f-a7e0-e041cb30d21b" width = 360px height = 180px>
