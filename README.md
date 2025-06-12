@@ -132,8 +132,17 @@ These parameters were tuned using the new learning_rate and n_estimators with Gr
 
 ## Conclusion
 The optimized model was able to achieve a better training accuracy while also being almost a second faster in run time.
+
 <img src = "https://github.com/user-attachments/assets/8c7424fd-bfc9-4f03-aa86-0167d6ffac5b" width = 360px height = 180px>
 <img src = "https://github.com/user-attachments/assets/a659237e-2b45-4b4f-a7e0-e041cb30d21b" width = 360px height = 180px>
+
+Resources for more research:
+Statquest series: https://www.youtube.com/watch?v=OtD8wVaFm6E&t=1260s
+Gradient Boosting: https://www.youtube.com/watch?v=en2bmeB4QUo&t=553s
+Important Model Parameters: https://xgboosting.com/most-important-xgboost-hyperparameters-to-tune/
+
+
+
 
 
 
